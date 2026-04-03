@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cuaderno Docente – Elizabeth</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --v:#1D9E75;--vl:#E1F5EE;--vd:#085041;
+  --r:#E24B4A;--rl:#FCEBEB;--rd:#791F1F;
+  --a:#BA7517;--al:#FAEEDA;
+  --az:#378ADD;--azl:#E6F1FB;--azd:#0C447C;
+  --p:#7F77DD;--pl:#EEEDFE;--pd:#3C3489;
+  --bg:#f7f6f2;--surface:#fff;--border:#e4e2da;
+  --text:#1a1a18;--muted:#6b6a65;--subtle:#9e9c96;
+  --radius:10px;--radius-sm:7px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+header{background:var(--v);color:#fff;padding:.9rem 1.4rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.18);}
+.logo{font-size:16px;font-weight:600;}
+.logo small{display:block;font-size:11px;opacity:.75;font-weight:400;margin-top:1px;}
+.hdate{font-size:11px;opacity:.8;text-align:right;line-height:1.5;}
+
+nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:54px;z-index:99;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+.tb{padding:10px 16px;border:none;background:none;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s;}
+.tb.on{color:var(--v);border-bottom-color:var(--v);font-weight:500;}
+
+main{max-width:880px;margin:0 auto;padding:1.1rem 1rem 3rem;}
+.sec{display:none;}.sec.on{display:block;}
+
+.esc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
+.esc-btn{padding:9px 20px;border:1.5px solid var(--border);border-radius:30px;background:var(--surface);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--muted);font-weight:500;transition:all .15s;}
+.esc-btn:hover{border-color:var(--v);}
+.esc-btn.cat.on{background:var(--vl);color:var(--vd);border-color:var(--v);}
+.esc-btn.tec.on{background:var(--azl);color:var(--azd);border-color:var(--az);}
+
+.cur-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;min-height:32px;}
+.cur-btn{padding:5px 14px;border:1px solid var(--border);border-radius:20px;background:var(--surface);cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--muted);transition:all .15s;}
+.cur-btn:hover{border-color:var(--v);}
+.cur-btn.on{background:var(--v);color:#fff;border-color:var(--vd);}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.95rem 1.15rem;margin-bottom:.9rem;}
+.card-title{font-size:13px;font-weight:600;margin-bottom:.8rem;}
+
+.row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem;}
+.fld{display:flex;flex-direction:column;gap:4px;}
+label{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.4px;}
+select,input[type=date],input[type=text],textarea{
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  padding:7px 10px;border:1px solid var(--border);
+  border-radius:var(--radius-sm);background:var(--surface);
+  color:var(--text);outline:none;transition:border .15s;
+}
+select:focus,input:focus,textarea:focus{border-color:var(--v);}
+textarea{resize:vertical;width:100%;min-height:60px;line-height:1.5;}
+
+.btn{padding:7px 15px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);transition:all .15s;font-weight:500;}
+.btn:hover{background:var(--bg);}
+.btn.pri{background:var(--v);color:#fff;border-color:var(--vd);}
+.btn.pri:hover{background:var(--vd);}
+.btn.sec{border-color:var(--az);color:var(--az);}
+.btn.sec:hover{background:var(--azl);}
+
+/* P / A toggle pair */
+.asist-pair{display:inline-flex;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);}
+.asist-pair button{padding:5px 13px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--muted);transition:all .1s;}
+.asist-pair button+button{border-left:1px solid var(--border);}
+.asist-pair button.sel-p{background:var(--vl);color:var(--vd);}
+.asist-pair button.sel-a{background:var(--rl);color:var(--rd);}
+
+.sgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:1rem;}
+.sc{background:var(--bg);border-radius:var(--radius-sm);padding:.65rem .9rem;border:1px solid var(--border);}
+.sv{font-size:20px;font-weight:600;}
+.sl{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;padding:6px 8px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+td{padding:7px 8px;border-bottom:1px solid #f0ede6;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafaf8;}
+
+.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;}
+.t1{background:var(--azl);color:var(--azd);}
+.t2{background:var(--pl);color:var(--pd);}
+.t3{background:var(--al);color:#633806;}
+.ti{background:var(--rl);color:var(--rd);}
+
+.nb{display:inline-block;min-width:30px;text-align:center;padding:2px 6px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;}
+.n-num,.n-MB{background:var(--azl);color:var(--azd);}
+.n-B{background:var(--vl);color:var(--vd);}
+.n-R{background:var(--al);color:#633806;}
+.n-I{background:var(--rl);color:var(--rd);}
+.n-hi{background:#EAF3DE;color:#27500A;}
+.n-lo{background:var(--rl);color:var(--rd);}
+
+.obs-in{font-size:12px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 7px;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;width:140px;}
+.obs-in:focus{outline:none;border-color:var(--v);background:#fff;}
+
+.empty{color:var(--muted);text-align:center;padding:2rem 0;font-size:13px;}
+.meta{font-size:12px;color:var(--muted);margin-bottom:.6rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.slbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
+
+/* Carácter info box */
+.char-info{background:var(--azl);border:1px solid #B5D4F4;border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:.8rem;display:none;}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 16px;margin-top:.5rem;}
+.char-item{font-size:12px;line-height:1.5;color:var(--azd);}
+.char-item b{font-weight:600;}
+.char-toggle{font-size:11px;color:var(--az);cursor:pointer;text-decoration:underline;font-weight:400;text-transform:none;letter-spacing:0;}
+
+@media print{
+  header,nav,.no-print{display:none!important;}
+  body{background:#fff;}
+  .card{border:1px solid #ccc;break-inside:avoid;}
+  .sec{display:block!important;}
+}
+@media(max-width:600px){
+  .obs-in{width:110px;}
+  main{padding:.9rem .75rem 2rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">📒 Cuaderno Docente<small>Prof. Elizabeth – Lengua y Literatura</small></div>
+  <div class="hdate" id="hdate"></div>
+</header>
+
+<nav>
+  <button class="tb on" onclick="tab('asist',this)">📋 Asistencia</button>
+  <button class="tb" onclick="tab('temas',this)">📖 Libro de temas</button>
+  <button class="tb" onclick="tab('cal',this)">⭐ Calificaciones</button>
+  <button class="tb" onclick="tab('res',this)">📊 Resumen</button>
+</nav>
+
+<main>
+
+<!-- ASISTENCIA -->
+<div id="asist" class="sec on">
+  <div class="card">
+    <div class="slbl" style="margin-bottom:.5rem;">Escuela</div>
+    <div class="esc-btns">
+      <button class="esc-btn cat" onclick="selEsc('asist','Escuela Católica',this)">🏫 San Pompilio</button>
+      <button class="esc-btn tec" onclick="selEsc('asist','Escuela Técnica',this)">⚙️ Técnica Nº 44</button>
+    </div>
+    <div class="slbl">Curso</div>
+    <div class="cur-btns" id="asist-curs"><span style="font-size:12px;color:var(--subtle);align-self:center;">Seleccioná una escuela primero</span></div>
+    <div id="asist-ctrl" style="display:none;">
+      <div class="row">
+        <div class="fld"><label>Trimestre</label>
+          <select id="a-trim">
+            <option value="1">1° Trimestre (mar–may)</option>
+            <option value="2">2° Trimestre (may–ago)</option>
+            <option value="3">3° Trimestre (ago–dic)</option>
+            <option value="i">Intensificación (nov–dic)</option>
+          </select>
+        </div>
+        <div class="fld"><label>Fecha</label><input type="date" id="a-fecha"/></div>
+        <button class="btn pri" onclick="loadAsist()">Cargar lista</button>
+      </div>
+    </div>
+  </div>
+  <div id="a-panel"></div>
+</div>
+
+<!-- TEMAS -->
+<div id="temas" class="sec">
+  <div class="card">
+    <div class="slbl" style="margin-bottom:.5rem;">Escuela</div>
+    <div class="esc-btns">
+      <button class="esc-btn cat" onclick="selEsc('temas','Escuela Católica',this)">🏫 San Pompilio</button>
+      <button class="esc-btn tec" onclick="selEsc('temas','Escuela Técnica',this)">⚙️ Técnica Nº 44</button>
+    </div>
+    <div class="slbl">Curso</div>
+    <div class="cur-btns" id="temas-curs"><span style="font-size:12px;color:var(--subtle);align-self:center;">Seleccioná una escuela primero</span></div>
+    <div id="temas-form" style="display:none;">
+      <div class="row">
+        <div class="fld"><label>Trimestre</label>
+          <select id="t-trim">
+            <option value="1">1° Trimestre</option><option value="2">2° Trimestre</option>
+            <option value="3">3° Trimestre</option><option value="i">Intensificación</option>
+          </select>
+        </div>
+        <div class="fld"><label>Fecha</label><input type="date" id="t-fecha"/></div>
+        <div class="fld"><label>Unidad Nº</label><input type="text" id="t-unidad" placeholder="1" style="width:62px;"/></div>
+      </div>
+      <div class="fld" style="margin-bottom:.6rem;"><label>Tema de la clase</label>
+        <input type="text" id="t-tema" placeholder="Ej: El cuento policial. Características del género. Lectura de Borges."/>
+      </div>
+      <div class="fld" style="margin-bottom:.5rem;">
+        <label>Carácter de la clase &nbsp;<span class="char-toggle" onclick="toggleChar()">¿qué significa cada uno? 👁</span></label>
+        <select id="t-caracter">
+          <option value="">— Seleccionar —</option>
+          <option value="Presentación">Presentación</option>
+          <option value="Orientación">Orientación</option>
+          <option value="Integración">Integración</option>
+          <option value="Revisión">Revisión</option>
+          <option value="Evaluación">Evaluación</option>
+          <option value="Producción">Producción</option>
+        </select>
+      </div>
+      <div class="char-info" id="char-info">
+        <strong style="font-size:12px;color:var(--azd);">Referencia rápida — Carácter de la clase</strong>
+        <div class="char-grid">
+          <div class="char-item"><b>Presentación:</b> Clase colectiva para comenzar un tema o unidad. Explicás las características fundamentales.</div>
+          <div class="char-item"><b>Orientación:</b> Supervisás, guiás y controlás actividades que realizan los alumnos. Rol de acompañamiento.</div>
+          <div class="char-item"><b>Integración:</b> Al finalizar uno o varios temas. Hacés conexiones teórico-prácticas entre lo trabajado.</div>
+          <div class="char-item"><b>Revisión:</b> Repaso o refuerzo de temas ya vistos. Generalmente antes de una evaluación.</div>
+          <div class="char-item"><b>Evaluación:</b> Toda la clase se destina a actividades de evaluación propiamente dichas.</div>
+          <div class="char-item"><b>Producción:</b> Realización de trabajos encomendados, con o sin relación directa con el programa.</div>
+        </div>
+      </div>
+      <div class="fld" style="margin-bottom:.6rem;"><label>Actividades</label>
+        <textarea id="t-act" placeholder="Ej: Exposición dialogada, lectura guiada, análisis de texto, puesta en común, elaboración de guía de preguntas, TP grupal..."></textarea>
+      </div>
+      <div class="fld" style="margin-bottom:.9rem;"><label>Observaciones</label>
+        <input type="text" id="t-obs" placeholder="Ej: Retiro de docente, suceso extraordinario, cambio de aula..."/>
+      </div>
+      <button class="btn pri" onclick="saveTema()">Guardar entrada</button>
+    </div>
+  </div>
+  <div id="t-panel"></div>
+</div>
+
+<!-- CALIFICACIONES -->
+<div id="cal" class="sec">
+  <div class="card">
+    <div class="slbl" style="margin-bottom:.5rem;">Escuela</div>
+    <div class="esc-btns">
+      <button class="esc-btn cat" onclick="selEsc('cal','Escuela Católica',this)">🏫 San Pompilio</button>
+      <button class="esc-btn tec" onclick="selEsc('cal','Escuela Técnica',this)">⚙️ Técnica Nº 44</button>
+    </div>
+    <div class="slbl">Curso</div>
+    <div class="cur-btns" id="cal-curs"><span style="font-size:12px;color:var(--subtle);align-self:center;">Seleccioná una escuela primero</span></div>
+    <div id="cal-ctrl" style="display:none;">
+      <div class="row">
+        <div class="fld"><label>Trimestre</label>
+          <select id="c-trim">
+            <option value="1">1° Trimestre</option><option value="2">2° Trimestre</option>
+            <option value="3">3° Trimestre</option><option value="i">Intensificación</option>
+          </select>
+        </div>
+        <button class="btn pri" onclick="loadCal()">Cargar</button>
+      </div>
+    </div>
+  </div>
+  <div id="c-panel"></div>
+</div>
+
+<!-- RESUMEN -->
+<div id="res" class="sec">
+  <div class="card">
+    <div class="slbl" style="margin-bottom:.5rem;">Escuela</div>
+    <div class="esc-btns">
+      <button class="esc-btn cat" onclick="selEsc('res','Escuela Católica',this)">🏫 San Pompilio</button>
+      <button class="esc-btn tec" onclick="selEsc('res','Escuela Técnica',this)">⚙️ Técnica Nº 44</button>
+    </div>
+    <div class="slbl">Curso</div>
+    <div class="cur-btns" id="res-curs"><span style="font-size:12px;color:var(--subtle);align-self:center;">Seleccioná una escuela primero</span></div>
+    <div id="res-ctrl" style="display:none;">
+      <div class="row">
+        <div class="fld"><label>Trimestre</label>
+          <select id="r-trim">
+            <option value="1">1° Trimestre</option><option value="2">2° Trimestre</option>
+            <option value="3">3° Trimestre</option><option value="i">Intensificación</option>
+          </select>
+        </div>
+        <button class="btn pri" onclick="loadRes()">Ver resumen</button>
+        <button class="btn sec no-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+      </div>
+    </div>
+  </div>
+  <div id="r-panel"></div>
+</div>
+
+</main>
+
+<script>
+const DB={
+  cursos:{"Escuela Católica":["1° B","2° A","2° B"],"Escuela Técnica":["3° I","4° MMO","4° TE","5° MMO","5° TE"]},
+  alumnos:{
+    "Escuela Católica||1° B":["BAEZ, Naima Sofía","BALLESTEROS V., Ramón","BIANCARLOS, León","FIGUEROA, Ashley Nayeli","FRANCO, Valentina","GAITAN, Sofía Milena","GAITAN, Milos","GIUPPONI BUFFA, Alessia Sol","GONZÁLEZ, Gael","KLUG, Ignacio Emanuel","KLUG, Paula","MÜLLER POOS, Bastian","MÜLLER POOS, Franchesca","RICHTER, Theo Daian","RÍOS, Tían Lisandro Samuel","SUBIAS, Francisco Javier","TABORDA, Felipe","ZORAT BOXLER, Agustina"],
+    "Escuela Católica||2° A":["ACOSTA, Pedro Francisco","BALLEJOS, Leylen Geraldine","BENÍTEZ KAISER, Mia","GAITAN, Ornella Jazmín","GAUNA MILLER, Alison Yanel","GARCÍA, Victoria","GILLIG, Constantino Nazareno","KHUN, Thomas Ezequiel","KÜHN, Ariana Joselin","KUHN, Tiago Gabriel","LEDESMA, Luana Ailin","LÓPEZ, Alexia Kiara Yazmín","LUNA, Irina","MARTÍNEZ RÍOS, Denise Candela","MERCADO, Mía Clara","RAUSCH GAITAN, Micaela Arlene","SCHNEIDER, Luca Benjamín","SCHNEIDER, Cristóbal","VERÓN LÓPEZ, Evelyn Marianela","VERÓN, Mia Joselin","VICARI, Lucia","WIIGGENHAUSER, Ignacio Fran.","ZAMORA PAUTASSO, Olivia","ZURDO GARCÍA, Zaira"],
+    "Escuela Católica||2° B":["AGUIRRE, Maitena Agostina","ANDREOTTI, Milagros Mica.","BARRETO, Ismael Alejandro","DONDA, Bárbara Geraldina","FACENDINI, Catalina Joselin","GARIBOGLIO, Ian Juan Gab.","GONZÁLEZ, Juanita","KLOSTER, Mia Angelina María","KORNCHU, Anabela Joselin","KÜHN, Malena Sofía","KÜHN, Yazmín Araceli","LANZI CABRERA, Ana Paula","MILLER, Morena Abigail","MOSTAFA, Amira Jazmin","NORIEGA, Guadalupe Nicol","NORIEGA, Judith Maité","RODRIGUEZ, Thiago Nahuel","ROMERO, Nahiara","TOCI, Facundo José Antonio","TOMÉ, Ali","VERGARA, Mía Catalina"],
+    "Escuela Técnica||3° I":["AMARILLO, Sofía Micaela","BALBUENA, Tiziano Luís","CENA, Bella Danae","FERNANDEZ, Melody","KORNCHU, Máximo Gaspar","LARREA PIRIS, Lilen Valentina","LÓPEZ, Luciano","MARTINEZ LEONES, Aimara L.","MONZALVO, Máximo","OLIVO, Yvonne Abigail","PAUL, Agustín Uriel","PELLEGRINI, Bautista B.","SANCHEZ, Ciara Jazmín","SIRO KLIPAN, Agustina Zoe","TOSSO HARTMANN, Valentino","VERGARA, Benjamín","VIDELA, Lucio","WEISHEIM, Lautaro","ZABALA, Catalina"],
+    "Escuela Técnica||4° MMO":["ACEVEDO, Sofía Jazmín","BENITEZ, Keila Iriana","BERGARA, Pablo Benjamín","ESCOBAR, Kiara Michelle","DIAZ ARCE, Elisa","GAITAN, Joaquín Adriel","GOMEZ, Melanie Sofía","GRAZIANI, Joaquín Edgardo","JARA URRUTIA, Guillermina","LEONES, Jazmín Aneley","LÓPEZ, Santino Benjamín","ROMERO ERTEL, Jerónimo Josué","SERVIN GÓMEZ, Ayelén A. M.","VENTURA, Dalma Selena"],
+    "Escuela Técnica||4° TE":["DALMASSO, Francisco","FRANCO, Santiago","GARCIA, Gerónimo","GÓMEZ, Quelion","HEFLING, Alexis","HEFLING GHIBAUDO, Jeremías","JARLIP, Jonathan Gabriel","KÜHN, Milagros Rocío","KHÜN, Valentina","LEDESMA, Brian","LENCINA LÓPEZ, Thiago","OLIVO NAMIR, Brian","PADILLA, Bautista","PEREIRA, Juan Cruz","RAMIREZ ACOSTA, Jano","RUEDA, Romina","SANCHEZ CORONEL, Alyssa","TABORDA ACOSTA, Benjamín","ULMAN, Lisette","ZABALA, Adriano","ZEBALLOS, Elias"],
+    "Escuela Técnica||5° TE":["ALMEIDA LOPEZ, Alan B.","GÓMEZ, Diego Benjamín","KHUN, Benjamín","KHUN FRANCO, Máximo M.","KUHN ULMAN, Luciano Ángel","LESCANO, Alex Benjamín","LOGUZZO, Leandro Agustín","LÓPEZ ESTUDILLA, Emanuel S.","MAROÑO, Tomás F.","MEDRANO WHEISHEIM, Benjamín","ORELLANA MARCONI, Alessandro","RUPPEL NUÑEZ, Cristian Elías"],
+    "Escuela Técnica||5° MMO":["BUSSATO, Santiago Bautista","CARRAZAN, Jair Jesús","DÍAZ, Lautaro Benjamín","GARCIA, Luciano Javier","GAUNA SERVIN, Candela","GÓMEZ, Ariel Oscar","LUNA, Santino Natael","ORELLANA MARCONI, Franco","PAVON, Bryanna Leonela","PIRIS, Uriel Nicolás","RAMOS, Wilson Elías","RIEDEL, Bianca Valentina","TREPATT, Mía Jennifer T.","WOUTERLOOD, Neyén Iyára"]
+  },
+  trimestres:{
+    "1":{label:"1° Trimestre",rango:"2 mar – 22 may",cls:"t1"},
+    "2":{label:"2° Trimestre",rango:"26 may – 28 ago",cls:"t2"},
+    "3":{label:"3° Trimestre",rango:"31 ago – 18 dic",cls:"t3"},
+    "i":{label:"Intensificación",rango:"30 nov – 7 dic",cls:"ti"}
+  }
+};
+
+const ST={asist:{esc:'',cur:''},temas:{esc:'',cur:''},cal:{esc:'',cur:''},res:{esc:'',cur:''}};
+const gd=k=>{try{return JSON.parse(localStorage.getItem(k))||{};}catch(e){return{};}};
+const sd=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const hoy=()=>new Date().toISOString().slice(0,10);
+const fmt=f=>{if(!f)return'';const[y,m,d]=f.split('-');return`${d}/${m}/${y}`;};
+
+function tab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function selEsc(sec,esc,btn){
+  ST[sec].esc=esc; ST[sec].cur='';
+  btn.parentElement.querySelectorAll('.esc-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const cont=document.getElementById(sec+'-curs');
+  const cursos=DB.cursos[esc]||[];
+  cont.innerHTML=cursos.map(c=>`<button class="cur-btn" onclick="selCur('${sec}','${c}',this)">${c}</button>`).join('');
+  hideCtrl(sec);
+}
+
+function selCur(sec,cur,btn){
+  ST[sec].cur=cur;
+  btn.parentElement.querySelectorAll('.cur-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  showCtrl(sec);
+  if(sec==='temas')renderTemas();
+}
+
+function showCtrl(sec){
+  const ids={asist:'asist-ctrl',temas:'temas-form',cal:'cal-ctrl',res:'res-ctrl'};
+  document.getElementById(ids[sec]).style.display='block';
+  const panels={asist:'a-panel',temas:'t-panel',cal:'c-panel',res:'r-panel'};
+  document.getElementById(panels[sec]).innerHTML='';
+}
+function hideCtrl(sec){
+  const ids={asist:'asist-ctrl',temas:'temas-form',cal:'cal-ctrl',res:'res-ctrl'};
+  document.getElementById(ids[sec]).style.display='none';
+  const panels={asist:'a-panel',temas:'t-panel',cal:'c-panel',res:'r-panel'};
+  document.getElementById(panels[sec]).innerHTML='';
+}
+
+function toggleChar(){
+  const el=document.getElementById('char-info');
+  el.style.display=el.style.display==='none'||!el.style.display?'block':'none';
+}
+
+function saveObs(esc,cur,safeA,val){
+  const a=decodeURIComponent(safeA);
+  const key=`obs|${esc}|${cur}`;
+  const data=gd(key);
+  if(!data[a])data[a]={};
+  data[a].obs=val;
+  sd(key,data);
+}
+
+// ASISTENCIA
+function loadAsist(){
+  const esc=ST.asist.esc,cur=ST.asist.cur;
+  const trim=document.getElementById('a-trim').value;
+  let fecha=document.getElementById('a-fecha').value||hoy();
+  document.getElementById('a-fecha').value=fecha;
+  if(!esc||!cur)return;
+  const alumnos=DB.alumnos[esc+'||'+cur]||[];
+  const key=`asist|${esc}|${cur}`;
+  const data=gd(key);
+  const tf=trim+'|'+fecha;
+  if(!data[tf]){data[tf]={};alumnos.forEach(a=>data[tf][a]='P');}
+  sd(key,data);
+  renderAsist(esc,cur,trim,fecha,alumnos,data);
+}
+
+function renderAsist(esc,cur,trim,fecha,alumnos,data){
+  const tf=trim+'|'+fecha;
+  const td=DB.trimestres[trim];
+  const pres=alumnos.filter(a=>data[tf][a]==='P').length;
+  const obsData=gd(`obs|${esc}|${cur}`);
+  let h=`<div class="sgrid">
+    <div class="sc"><div class="sv">${alumnos.length}</div><div class="sl">Total</div></div>
+    <div class="sc"><div class="sv" style="color:var(--v)">${pres}</div><div class="sl">Presentes</div></div>
+    <div class="sc"><div class="sv" style="color:var(--r)">${alumnos.length-pres}</div><div class="sl">Ausentes</div></div>
+  </div>
+  <div class="card">
+    <div class="meta"><span class="badge ${td.cls}">${td.label}</span>${esc} · ${cur} · <strong>${fmt(fecha)}</strong></div>
+    <div class="tbl-wrap"><table>
+    <thead><tr><th>Alumno/a</th><th>Asistencia</th><th>Observación</th></tr></thead><tbody>`;
+  alumnos.forEach(a=>{
+    const est=data[tf][a]||'P';
+    const obsVal=(obsData[a]||{}).obs||'';
+    const safeA=encodeURIComponent(a);
+    h+=`<tr>
+      <td>${a}</td>
+      <td><div class="asist-pair">
+        <button class="${est==='P'?'sel-p':''}" onclick="setAsist('${esc}','${cur}','${trim}','${fecha}','${safeA}','P')">P</button>
+        <button class="${est==='A'?'sel-a':''}" onclick="setAsist('${esc}','${cur}','${trim}','${fecha}','${safeA}','A')">A</button>
+      </div></td>
+      <td><input class="obs-in" type="text" value="${obsVal.replace(/"/g,'&quot;')}" placeholder="Llegó tarde, certificado..." onchange="saveObs('${esc}','${cur}','${safeA}',this.value)"/></td>
+    </tr>`;
+  });
+  h+=`</tbody></table></div></div>`;
+  document.getElementById('a-panel').innerHTML=h;
+}
+
+function setAsist(esc,cur,trim,fecha,safeA,val){
+  const a=decodeURIComponent(safeA);
+  const key=`asist|${esc}|${cur}`;
+  const data=gd(key);
+  const tf=trim+'|'+fecha;
+  data[tf][a]=val;
+  sd(key,data);
+  renderAsist(esc,cur,trim,fecha,DB.alumnos[esc+'||'+cur]||[],data);
+}
+
+// TEMAS
+function saveTema(){
+  const esc=ST.temas.esc,cur=ST.temas.cur;
+  const trim=document.getElementById('t-trim').value;
+  const fecha=document.getElementById('t-fecha').value||hoy();
+  const unidad=document.getElementById('t-unidad').value.trim();
+  const tema=document.getElementById('t-tema').value.trim();
+  const car=document.getElementById('t-caracter').value;
+  const act=document.getElementById('t-act').value.trim();
+  const obs=document.getElementById('t-obs').value.trim();
+  if(!esc||!cur||!tema){alert('Completá escuela, curso y tema de la clase.');return;}
+  const key=`temas|${esc}|${cur}`;
+  const data=gd(key);
+  const tf=trim+'|'+fecha;
+  if(!data[tf])data[tf]=[];
+  data[tf].push({unidad,tema,car,act,obs,ts:Date.now()});
+  sd(key,data);
+  document.getElementById('t-tema').value='';
+  document.getElementById('t-act').value='';
+  document.getElementById('t-obs').value='';
+  renderTemas();
+}
+
+function renderTemas(){
+  const esc=ST.temas.esc,cur=ST.temas.cur;
+  if(!esc||!cur)return;
+  const data=gd(`temas|${esc}|${cur}`);
+  const keys=Object.keys(data).sort((a,b)=>b.localeCompare(a));
+  if(!keys.length){document.getElementById('t-panel').innerHTML='<p class="empty">Sin entradas aún. Completá el formulario arriba y guardá.</p>';return;}
+  let h='';
+  keys.forEach(tf=>{
+    const[trim,fecha]=tf.split('|');
+    const td=DB.trimestres[trim]||{label:'',cls:'t1'};
+    h+=`<div class="card"><div class="meta"><span class="badge ${td.cls}">${td.label}</span>${esc} · ${cur} · <strong>${fmt(fecha)}</strong></div>`;
+    data[tf].forEach((e,i)=>{
+      h+=`<div style="${i>0?'margin-top:10px;padding-top:10px;border-top:1px solid var(--border);':''}">
+        ${e.unidad?`<div class="slbl">Unidad ${e.unidad}</div>`:''}
+        <div style="font-size:14px;font-weight:500;margin:2px 0 5px;">${e.tema}</div>
+        ${e.car?`<span class="badge t1" style="margin-bottom:6px;display:inline-block;">${e.car}</span><br>`:''}
+        ${e.act?`<div class="slbl" style="margin-top:2px;">Actividades</div><div style="font-size:13px;color:var(--muted);line-height:1.5;">${e.act}</div>`:''}
+        ${e.obs?`<div class="slbl" style="margin-top:4px;">Observaciones</div><div style="font-size:12px;color:var(--subtle);font-style:italic;">${e.obs}</div>`:''}
+      </div>`;
+    });
+    h+=`</div>`;
+  });
+  document.getElementById('t-panel').innerHTML=h;
+}
+
+// CALIFICACIONES
+function loadCal(){
+  const esc=ST.cal.esc,cur=ST.cal.cur;
+  const trim=document.getElementById('c-trim').value;
+  if(!esc||!cur)return;
+  const alumnos=DB.alumnos[esc+'||'+cur]||[];
+  renderCal(esc,cur,trim,alumnos,gd(`notas|${esc}|${cur}|${trim}`));
+}
+
+function renderCal(esc,cur,trim,alumnos,data){
+  const td=DB.trimestres[trim];
+  const evals=data._evals||[];
+  let h=`<div class="card">
+    <div class="meta"><span class="badge ${td.cls}">${td.label}</span>${esc} · ${cur}</div>
+    <div class="card-title">Nueva evaluación</div>
+    <div class="row">
+      <div class="fld"><label>Nombre</label><input type="text" id="en" placeholder="TP Nº1, Parcial, Exposición..."/></div>
+      <div class="fld"><label>Tipo</label><select id="et"><option value="num">Numérica (1–10)</option><option value="conc">Conceptual (MB/B/R/I)</option></select></div>
+      <div class="fld"><label>Fecha</label><input type="date" id="ef"/></div>
+      <button class="btn pri" onclick="addEval()">+ Agregar</button>
+    </div></div>`;
+  if(!evals.length){h+='<p class="empty">Agregá una evaluación para comenzar a calificar.</p>';document.getElementById('c-panel').innerHTML=h;return;}
+  h+=`<div class="card"><div class="tbl-wrap"><table><thead><tr><th>Alumno/a</th>`;
+  evals.forEach(ev=>h+=`<th style="min-width:72px;">${ev.n}<br><span style="font-size:10px;font-weight:400;">${ev.t==='num'?'1–10':'MB/B/R/I'}</span></th>`);
+  h+=`<th>Obs.</th></tr></thead><tbody>`;
+  alumnos.forEach(a=>{
+    const obsData=gd(`obs|${esc}|${cur}`);
+    const obsVal=(obsData[a]||{}).obs||'';
+    const safeA=encodeURIComponent(a);
+    h+=`<tr><td>${a}</td>`;
+    evals.forEach((ev,ei)=>{
+      const nota=(data[a]||{})[ei];
+      if(ev.t==='num'){
+        h+=`<td><select onchange="setNota('${esc}','${cur}','${trim}','${safeA}',${ei},this.value,'num')" style="width:54px;font-size:12px;"><option value="">—</option>${[1,2,3,4,5,6,7,8,9,10].map(n=>`<option ${nota==n?'selected':''}>${n}</option>`).join('')}</select></td>`;
+      }else{
+        h+=`<td><select onchange="setNota('${esc}','${cur}','${trim}','${safeA}',${ei},this.value,'conc')" style="width:54px;font-size:12px;"><option value="">—</option>${['MB','B','R','I'].map(c=>`<option ${nota===c?'selected':''}>${c}</option>`).join('')}</select></td>`;
+      }
+    });
+    h+=`<td><input class="obs-in" type="text" value="${obsVal.replace(/"/g,'&quot;')}" placeholder="..." onchange="saveObs('${esc}','${cur}','${safeA}',this.value)"/></td></tr>`;
+  });
+  h+=`</tbody></table></div></div>`;
+  document.getElementById('c-panel').innerHTML=h;
+}
+
+function addEval(){
+  const esc=ST.cal.esc,cur=ST.cal.cur,trim=document.getElementById('c-trim').value;
+  const n=document.getElementById('en').value.trim();
+  const t=document.getElementById('et').value;
+  const f=document.getElementById('ef').value||hoy();
+  if(!n){alert('Poné un nombre a la evaluación.');return;}
+  const key=`notas|${esc}|${cur}|${trim}`;
+  const data=gd(key);
+  if(!data._evals)data._evals=[];
+  data._evals.push({n,t,f});
+  sd(key,data);
+  loadCal();
+}
+
+function setNota(esc,cur,trim,safeA,ei,val,tipo){
+  const a=decodeURIComponent(safeA);
+  const key=`notas|${esc}|${cur}|${trim}`;
+  const data=gd(key);
+  if(!data[a])data[a]={};
+  data[a][ei]=tipo==='num'?parseInt(val):val;
+  sd(key,data);
+}
+
+// RESUMEN
+function loadRes(){
+  const esc=ST.res.esc,cur=ST.res.cur,trim=document.getElementById('r-trim').value;
+  if(!esc||!cur)return;
+  const alumnos=DB.alumnos[esc+'||'+cur]||[];
+  const td=DB.trimestres[trim];
+  const asistData=gd(`asist|${esc}|${cur}`);
+  const notasData=gd(`notas|${esc}|${cur}|${trim}`);
+  const temasData=gd(`temas|${esc}|${cur}`);
+  const obsData=gd(`obs|${esc}|${cur}`);
+  const evals=notasData._evals||[];
+  const fechasTrim=Object.keys(asistData).filter(tf=>tf.startsWith(trim+'|'));
+  const total=fechasTrim.length;
+  let h=`<div class="card"><div class="meta"><span class="badge ${td.cls}">${td.label}</span>${esc} · ${cur} <span style="color:var(--subtle)">(${td.rango})</span></div>
+    <div class="sgrid">
+      <div class="sc"><div class="sv">${total}</div><div class="sl">Clases</div></div>
+      <div class="sc"><div class="sv">${alumnos.length}</div><div class="sl">Alumnos</div></div>
+      <div class="sc"><div class="sv">${evals.length}</div><div class="sl">Evaluaciones</div></div>
+    </div></div>`;
+  if(total){
+    h+=`<div class="card"><div class="card-title">Asistencia del trimestre</div><div class="tbl-wrap"><table>
+    <thead><tr><th>Alumno/a</th><th>Pres.</th><th>Aus.</th><th>%</th><th>Observaciones</th></tr></thead><tbody>`;
+    alumnos.forEach(a=>{
+      const pres=fechasTrim.filter(tf=>asistData[tf][a]==='P').length;
+      const pct=Math.round(pres/total*100);
+      const obs=(obsData[a]||{}).obs||'';
+      const col=pct>=75?'var(--v)':pct>=50?'var(--a)':'var(--r)';
+      h+=`<tr><td>${a}</td><td style="font-weight:600;color:var(--v)">${pres}</td><td style="font-weight:600;color:var(--r)">${total-pres}</td><td><span style="font-weight:600;color:${col}">${pct}%</span></td><td style="color:var(--muted);font-size:12px;">${obs}</td></tr>`;
+    });
+    h+=`</tbody></table></div></div>`;
+  }
+  if(evals.length){
+    h+=`<div class="card"><div class="card-title">Calificaciones</div><div class="tbl-wrap"><table><thead><tr><th>Alumno/a</th>`;
+    evals.forEach(ev=>h+=`<th>${ev.n}</th>`);
+    h+=`</tr></thead><tbody>`;
+    alumnos.forEach(a=>{
+      h+=`<tr><td>${a}</td>`;
+      evals.forEach((ev,ei)=>{
+        const nota=(notasData[a]||{})[ei];
+        let cls=typeof nota==='string'?'n-'+nota:(nota>=7?'n-hi':nota<=4?'n-lo':'n-num');
+        h+=`<td>${nota!==undefined&&nota!==''?`<span class="nb ${cls}">${nota}</span>`:'—'}</td>`;
+      });
+      h+=`</tr>`;
+    });
+    h+=`</tbody></table></div></div>`;
+  }
+  const ct=Object.keys(temasData).filter(tf=>tf.startsWith(trim+'|')).sort((a,b)=>b.localeCompare(a));
+  if(ct.length){
+    h+=`<div class="card"><div class="card-title">Libro de temas</div><div class="tbl-wrap"><table>
+    <thead><tr><th>Fecha</th><th>U.</th><th>Tema</th><th>Carácter</th><th>Actividades</th><th>Obs.</th></tr></thead><tbody>`;
+    ct.forEach(tf=>{
+      const[,fecha]=tf.split('|');
+      temasData[tf].forEach(e=>{
+        h+=`<tr>
+          <td style="white-space:nowrap;">${fmt(fecha)}</td>
+          <td>${e.unidad||'—'}</td>
+          <td>${e.tema}</td>
+          <td>${e.car?`<span class="badge t1" style="white-space:nowrap;">${e.car}</span>`:'—'}</td>
+          <td style="color:var(--muted);font-size:12px;">${e.act||'—'}</td>
+          <td style="color:var(--subtle);font-size:12px;">${e.obs||'—'}</td>
+        </tr>`;
+      });
+    });
+    h+=`</tbody></table></div></div>`;
+  }
+  document.getElementById('r-panel').innerHTML=h;
+}
+
+// INIT
+const hoyStr=hoy();
+document.getElementById('a-fecha').value=hoyStr;
+document.getElementById('t-fecha').value=hoyStr;
+const dias=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const ahora=new Date();
+document.getElementById('hdate').textContent=`${dias[ahora.getDay()]} ${ahora.getDate()}/${ahora.getMonth()+1}/${ahora.getFullYear()}`;
+</script>
+</body>
+</html>
